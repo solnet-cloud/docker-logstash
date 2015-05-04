@@ -1,6 +1,6 @@
 # Logstash Docker
 # Solnet Solutions
-# Version: 0.1.3
+# Version: 0.1.4
 # Logstash Version: 1.4.2 ### Keep an eye out for 1.5.0 release as there are RC out which seem stable.
 
 # Pull base image (Java8)
@@ -8,7 +8,7 @@ FROM dockerfile/java:oracle-java8
 
 # Build Instructions:
 # When building use the following flags:
-#      --tag="logstash:0.1.3" --memory="4429185024" --memory-swap="-1"
+#      --tag="logstash:0.1.4" --memory="4429185024" --memory-swap="-1"
 #                                            4224 MiB (4GB + 128MB overhead)
 
 # Run Instructions:
@@ -17,9 +17,11 @@ FROM dockerfile/java:oracle-java8
 
 # Information
 MAINTAINER Taylor Bertie <taylor.bertie@solnet.co.nz>
-LABEL Description="This image is used to stand up a logstash instance." Version="0.1.3"
+LABEL Description="This image is used to stand up a logstash instance." Version="0.1.4"
 
 # Patch nodes:
+# Version 0.1.4
+#       - Changes configuration files ADD glob.
 # Version 0.1.3
 #       - Fixed typo in mkdir lines
 # Version 0.1.2
@@ -60,7 +62,7 @@ RUN \
   bin/plugin install contrib
   
 # Mount the configuration files
-ADD config/*.conf /ls-data/conf/ # Add all configuration files in config/
+ADD config/* /ls-data/conf/ # Add all configuration files in config/
 # NOTE: You also need add a lumberjack.crt and lumberjack.key into /ls-data/ssl/
 
 # Define a working directory
