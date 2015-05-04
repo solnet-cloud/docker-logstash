@@ -62,7 +62,8 @@ RUN \
   bin/plugin install contrib
   
 # Mount the configuration files
-ADD config/* /ls-data/conf/ # Add all configuration files in config/
+ADD config/* /ls-data/conf/
+# Add all configuration files in config/
 # NOTE: You also need add a lumberjack.crt and lumberjack.key into /ls-data/ssl/
 
 # Define a working directory
