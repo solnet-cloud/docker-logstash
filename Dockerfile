@@ -1,6 +1,6 @@
 # Logstash Docker
 # Solnet Solutions
-# Version: 0.1.0
+# Version: 0.1.1
 # Logstash Version: 1.4.2 ### Keep an eye out for 1.5.0 release as there are RC out which seem stable.
 
 # Pull base image (Java8)
@@ -8,7 +8,7 @@ FROM dockerfile/java:oracle-java8
 
 # Build Instructions:
 # When building use the following flags:
-#      --tag="logstash:0.1.0" --memory="4429185024" --memory-swap="-1"
+#      --tag="logstash:0.1.1" --memory="4429185024" --memory-swap="-1"
 #                                            4224 MiB (4GB + 128MB overhead)
 
 # Run Instructions:
@@ -17,9 +17,11 @@ FROM dockerfile/java:oracle-java8
 
 # Information
 MAINTAINER Taylor Bertie <taylor.bertie@solnet.co.nz>
-LABEL Description="This image is used to stand up a logstash instance." Version="0.1.0"
+LABEL Description="This image is used to stand up a logstash instance." Version="0.1.1"
 
 # Patch nodes:
+# Version 0.1.1
+#       - Removed redundant environment variables and removed $LS_CONF_DIR as it wouldn't work with entrypoint
 # Version 0.1.0
 #       - Used Elasticsearch Dockerfile 1.0.2 as a template for a Logstash 1.4.2 build.
 
@@ -28,8 +30,6 @@ ENV LS_PKG_NAME logstash-1.4.2
 ENV LS_HOME /ls-data/
 ENV LS_HEAP_SIZE 4g
 ENV LS_JAVA_OPTS "-Djava.io.tmpdir=$LS_HOME"
-ENV LS_CONF_DIR /ls-data/conf
-ENV LS_OPEN_FILES 16384
 
 # Prepare the various directories in /es-data/
 RUN \
@@ -59,7 +59,7 @@ RUN \
 WORKDIR /ls-data
 
 # Define default command as entrypoint
-ENTRYPOINT ["/logstash/bin/logstash", "-f ${LS_CONF_DIR}"] 
+ENTRYPOINT ["/logstash/bin/logstash", "-f /ls-data/conf"] 
 
 # Expose ports
 # Expose 9300: Transport for Elasticsearch
