@@ -1,14 +1,13 @@
 # Logstash Docker
 # Solnet Solutions
-# Version: 1.0.0
-# Logstash Version: 1.4.2 ### Keep an eye out for 1.5.0 release as there are RC out which seem stable.
+# Version: 1.4.2 ### Keep an eye out for 1.5.0 release as there are RC out which seem stable.
 
 # Pull base image (Java8)
-FROM dockerfile/java:oracle-java8
+FROM java:8-jre
 
 # Build Instructions:
 # When building use the following flags:
-#      --tag="logstash:1.0.0" --memory="4429185024" --memory-swap="-1"
+#      --tag="logstash:1.4.2" --memory="4429185024" --memory-swap="-1"
 #                                            4224 MiB (4GB + 128MB overhead)
 
 # Run Instructions:
@@ -21,9 +20,12 @@ FROM dockerfile/java:oracle-java8
 # Information
 MAINTAINER Taylor Bertie <taylor.bertie@solnet.co.nz>
 LABEL Description="This image is used to stand up a logstash instance. You should overwrite the configuration of this \
-container as the default probably does not fit your usecase" Version="1.0.0"
+container as the default probably does not fit your usecase" Version="1.4.2"
 
 # Patch nodes:
+# Version 1.4.2
+#       - Synced version numbers with software for ease of reference
+#       - Moved to java:8-jre as the dockerfile/java:oracle-java8 has been pulled from the repo and is not licensed
 # Version 1.0.0
 #       - Added a volume for the lumberjack ssl certifcates under /ls-data/ssl
 #       - Modified the hash filter to reflect the syslog type better
