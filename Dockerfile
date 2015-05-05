@@ -1,6 +1,6 @@
 # Logstash Docker
 # Solnet Solutions
-# Version: 0.1.6
+# Version: 1.0.0
 # Logstash Version: 1.4.2 ### Keep an eye out for 1.5.0 release as there are RC out which seem stable.
 
 # Pull base image (Java8)
@@ -8,18 +8,26 @@ FROM dockerfile/java:oracle-java8
 
 # Build Instructions:
 # When building use the following flags:
-#      --tag="logstash:0.1.6" --memory="4429185024" --memory-swap="-1"
+#      --tag="logstash:1.0.0" --memory="4429185024" --memory-swap="-1"
 #                                            4224 MiB (4GB + 128MB overhead)
 
 # Run Instructions:
 # When running use the following flags:
 #      --restart=on-failure
 
+# WARNING:DO NOT OUTPUT LOGS TO SYSLOG FOR THIS CONTAINER. Especially if a stdout logging is enabled. This could create
+# a feedback loop where events are processed multiple times.
+
 # Information
 MAINTAINER Taylor Bertie <taylor.bertie@solnet.co.nz>
-LABEL Description="This image is used to stand up a logstash instance." Version="0.1.6"
+LABEL Description="This image is used to stand up a logstash instance. You should overwrite the configuration of this \
+container as the default probably does not fit your usecase" Version="1.0.0"
 
 # Patch nodes:
+# Version 1.0.0
+#       - Added a volume for the lumberjack ssl certifcates under /ls-data/ssl
+#       - Modified the hash filter to reflect the syslog type better
+#       - Version ready for deployment
 # Version 0.1.6
 #       - Trailing slash (0.1.5) was not the issue, ENTRYPOINT should be properly paramtised.
 # Version 0.1.5
@@ -64,6 +72,9 @@ RUN \
 RUN \
   cd /logstash && \
   bin/plugin install contrib
+  
+# Provided a volume for the lumberjack SSL certificate
+VOLUME /ls-data/ssl/
   
 # Mount the configuration files
 ADD config/*.conf /ls-data/conf/
