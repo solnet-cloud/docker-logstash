@@ -23,6 +23,8 @@ LABEL Description="This image is used to stand up a logstash instance. You shoul
 container as the default probably does not fit your usecase" Version="1.4.2"
 
 # Patch nodes:
+# Version 1.4.2-r1
+#       - Fixed bug in default configuration file 81-hash-filter.conf
 # Version 1.4.2
 #       - Synced version numbers with software for ease of reference
 #       - Moved to java:8-jre as the dockerfile/java:oracle-java8 has been pulled from the repo and is not licensed
