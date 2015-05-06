@@ -49,7 +49,7 @@ container as the default probably does not fit your usecase" Version="1.4.2"
 # Version 0.1.0
 #       - Used Elasticsearch Dockerfile 1.0.2 as a template for a Logstash 1.4.2 build.
 
-# Set the Elasticsearch Version and other enviroment variables
+# Set the Logstash Version and other enviroment variables
 ENV LS_PKG_NAME logstash-1.4.2
 ENV LS_HOME /ls-data/
 ENV LS_HEAP_SIZE 4g
