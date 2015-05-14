@@ -239,13 +239,12 @@ for template_item in template_list:
         sys.exit(0) # This should be a return 0 to prevent the container from restart
     
     # Stream
-    template_list[template_item]['render'] = template_list[template_item]['template'].\
+    try:
+        template_list[template_item]['render'] = template_list[template_item]['template'].\
                                              render(template_list[template_item]['context'])
     
-    # Submit to file
-    template_list[template_item]['file'].write(template_list[template_item]['render'])
-    
-    try:
+        # Submit to file
+        template_list[template_item]['file'].write(template_list[template_item]['render'].encode('utf8'))
         template_list[template_item]['file'].close()
     except:
         e = sys.exc_info()[0]
