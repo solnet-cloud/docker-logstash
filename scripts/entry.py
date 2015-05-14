@@ -248,7 +248,9 @@ for template_item in template_list:
         template_list[template_item]['file'].close()
     except:
         e = sys.exc_info()[0]
-        print "Unrecognised exception occured, was unable to create template (returned %s), terminating..." % e
+        errormsg = "Unrecognised exception occured, was unable to create template %s (returned %s)," % template_item, e
+        errormsg += " terminating..."
+        print errormsg
         sys.exit(0) # This should be a return 0 to prevent the container from restarting.
 
 
