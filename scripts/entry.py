@@ -108,7 +108,7 @@ for file in (args.lm_ssl_crt, 'LM Certificate'), (args.lm_ssl_key, 'LM Key'):
         print "The %s file provided was not a valid valid file. Please provide a valid file, terminating..." % file[1]
         sys.exit(0) # This should be a return 0 to prevent the container from restarting
         
-for pair in (args.lm_ssl_crt, args.lm_ssl_key, 'LM'):
+for pair in [(args.lm_ssl_crt, args.lm_ssl_key, 'LM')]:
     if pair[0] is None or args.ignore_match_errors:
         continue # We don't need to do this if there are no files to check
     
