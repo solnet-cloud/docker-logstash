@@ -215,8 +215,8 @@ template_list[template_name] = template_dict
 template_loader = FileSystemLoader(template_location)
 template_env = TemplateEnvironment(loader=template_loader,
                                    lstrip_blocks=True,
-                                   trim_blocks=True,
-                                   keep_trailing_newline=True)
+                                   trim_blocks=True)
+                                   #keep_trailing_newline=True)
 
 # Load in expected templates
 for template_item in template_list:
@@ -236,15 +236,15 @@ for template_item in template_list:
         errormsg = "The file %s could not be opened for writing for template" % template_list[template_item]['path']
         errormsg += " %s (returned %s), terminating..." % template_item, e
         print errormsg
-        sys.exit(0) # This should be a return 0 to prevent the container from restarti
+        sys.exit(0) # This should be a return 0 to prevent the container from restart
     
     # Stream
     try:
-        template_list[template_item]['stream'] = template_list[template_item]['template'].\
-                                             stream(template_list[template_item]['context'])
+        template_list[template_item]['render'] = template_list[template_item]['template'].\
+                                             render(template_list[template_item]['context'])
 
         # Submit to file
-        template_list[template_item]['stream'].dump(template_list[template_item]['file'])
+        template_list[template_item]['file'].write(template_list[template_item]['render'])
         template_list[template_item]['file'].close()
     except:
         e = sys.exc_info()[0]
