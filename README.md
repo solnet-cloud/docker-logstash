@@ -2,8 +2,10 @@
 
     Please note the following for this build:
     
-    - 1.5.0 has just been released. Althrough this should upgrade without issue to 1.5.0 it is strongly recommended you continue to use 1.4.2 until this container has been verified to work with 1.5.0.
-    - I will be providing a guide on how to update your rsyslog files to be RFC3164 compliant, or modifying this to provide raw groked TCP/UDP inputs, until then expect lots of _grokparsefailure tags for any syslog input
+    - 1.5.0 has just been released. Althrough this should upgrade without issue to 1.5.0 it is strongly recommended you 
+      continue to use 1.4.2 until this container has been verified to work with 1.5.0.
+    - I will be providing a guide on how to update your rsyslog files to be RFC3164 compliant, or modifying this to
+      provide raw groked TCP/UDP inputs, until then expect lots of _grokparsefailure tags for any syslog input
 
 
 Logstash is a flexible, open source data collection, parsing, and enrichment pipeline. With connectors to common infrastructure for easy integration, Logstash is designed to efficiently process a growing list of log, event, and unstructured data sources for distribution into a variety of outputs, including Elasticsearch.
@@ -20,7 +22,7 @@ Please note that if you need a Lumberjack interface you will need to provide an 
 
 NOTICE: As this build is designed to run using multicast it is recommend you utilise Weave, or bridge your docker0 on a common subnet in order to facilate the multicast. If you require unicast please override the configuration file
 
-WARNING: DO NOT OUTPUT LOGS TO SYSLOG FOR THIS CONTAINER. Especially if a stdout logging is enabled. This could create a feedback loop where events are processed multiple times, espically if --stdout is enabled.
+WARNING: DO NOT OUTPUT LOGS TO SYSLOG FOR THIS CONTAINER. Especially if a stdout logging is enabled. This could create a feedback loop where events are processed multiple times.
 
 WARNING: Please note that as syslog is a very muddy term this input only supports RFC3164 syslog with some small modifications. The date format is allowed to be RFC3164 style or ISO8601. Otherwise the rest of RFC3164 must be obeyed. If you do not use RFC3164, DO NOT USE this input.
 
