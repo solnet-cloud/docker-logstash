@@ -239,19 +239,17 @@ for template_item in template_list:
         sys.exit(0) # This should be a return 0 to prevent the container from restarti
     
     # Stream
-    #try:
-    if True:
+    try:
         template_list[template_item]['stream'] = template_list[template_item]['template'].\
                                              stream(template_list[template_item]['context'])
 
         # Submit to file
-        import code; code.interact(local=locals())
         template_list[template_item]['stream'].dump(template_list[template_item]['file'])
         template_list[template_item]['file'].close()
-    #except:
-        #e = sys.exc_info()[0]
-        #print "Unrecognised exception occured, was unable to create template (returned %s), terminating..." % e
-        #sys.exit(0) # This should be a return 0 to prevent the container from restarting.
+    except:
+        e = sys.exc_info()[0]
+        print "Unrecognised exception occured, was unable to create template (returned %s), terminating..." % e
+        sys.exit(0) # This should be a return 0 to prevent the container from restarting.
 
 
     # Change owner and group

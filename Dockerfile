@@ -3,7 +3,7 @@
 # Version: 1.4.2 ### Keep an eye out for 1.5.0 release as there are RC out which seem stable.
 
 # Pull base image (Java8)
-FROM java:8-jre
+FROM ubuntu:14.04
 
 # Build Instructions:
 # When building use the following flags:
@@ -70,7 +70,7 @@ ENV LS_JAVA_OPTS "-Djava.io.tmpdir=$LS_HOME"
 # Install any required preqs
 RUN \
     apt-get update && \
-    apt-get install wget python python-jinja2 python-openssl python-crypto -y && \
+    apt-get install wget python python-jinja2 python-openssl python-crypto openjdk-7-jre -y && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
