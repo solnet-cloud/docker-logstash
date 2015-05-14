@@ -18,7 +18,7 @@ Under the most basic usage you will make sure it is operating in the same networ
 
     docker run -d --restart=on-failure --memory="4429185024" --memory-swap="-1" solnetcloud/logstash:latest
 
-Please note that if you need a Lumberjack interface you will need to provide an SSL certificate --lm-ssl-crt and --lm-ssl-key. Lumberjack requires JSON input and will be avaliable on port 8888.
+Please note that if you need a Lumberjack interface you will need to provide an SSL certificate --lm-ssl-crt and --lm-ssl-key. Lumberjack requires JSON input and will be available on port 8888.
 
 NOTICE: As this build is designed to run using multicast it is recommend you utilise Weave, or bridge your docker0 on a common subnet in order to facilate the multicast. If you require unicast please override the configuration file
 
