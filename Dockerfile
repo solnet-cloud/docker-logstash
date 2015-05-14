@@ -70,7 +70,7 @@ ENV LS_JAVA_OPTS "-Djava.io.tmpdir=$LS_HOME"
 # Install any required preqs
 RUN \
     apt-get update && \
-    apt-get install wget python python-jinja2 python-openssl python-crypto openjdk-7-jre -y && \
+    apt-get install wget python python-jinja2 python-openssl python-crypto openjdk-7-jre-headless -y && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
