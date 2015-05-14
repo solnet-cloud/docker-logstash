@@ -215,8 +215,8 @@ template_list[template_name] = template_dict
 template_loader = FileSystemLoader(template_location)
 template_env = TemplateEnvironment(loader=template_loader,
                                    lstrip_blocks=True,
-                                   trim_blocks=True)
-                                   #keep_trailing_newline=True)
+                                   trim_blocks=True,
+                                   keep_trailing_newline=True)
 
 # Load in expected templates
 for template_item in template_list:
