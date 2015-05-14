@@ -245,7 +245,7 @@ for template_item in template_list:
                                              stream(template_list[template_item]['context'])
 
         # Submit to file
-        import pdb; pdb.set_trace()
+        import code; code.interact(local=locals())
         template_list[template_item]['stream'].dump(template_list[template_item]['file'])
         template_list[template_item]['file'].close()
     #except:
