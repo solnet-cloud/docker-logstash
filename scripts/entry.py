@@ -179,7 +179,7 @@ template_dict = { 'context' : { # Subsitutions to be performed
                                 'lm_ssl_crt'   : args.lm_ssl_crt,
                                 'lm_ssl_key'   : args.lm_ssl_key,
                                 'lm_type'      : args.lm_type,
-                                #'lm_tags'      : lm_tags,
+                                'lm_tags'      : lm_tags,
                               },
                   'path'    : '/ls-data/conf/00-ls-input.conf',
                   'user'    : 'root',
@@ -245,6 +245,7 @@ for template_item in template_list:
                                              stream(template_list[template_item]['context'])
 
         # Submit to file
+        import pdb; pdb.set_trace()
         template_list[template_item]['stream'].dump(template_list[template_item]['file'])
         template_list[template_item]['file'].close()
     #except:
