@@ -179,7 +179,7 @@ template_dict = { 'context' : { # Subsitutions to be performed
                                 'lm_ssl_crt'   : args.lm_ssl_crt,
                                 'lm_ssl_key'   : args.lm_ssl_key,
                                 'lm_type'      : args.lm_type,
-                                'lm_tags'      : lm_tags,
+                                #'lm_tags'      : lm_tags,
                               },
                   'path'    : '/ls-data/conf/00-ls-input.conf',
                   'user'    : 'root',
@@ -187,7 +187,7 @@ template_dict = { 'context' : { # Subsitutions to be performed
                   'mode'    : 0644 }
 template_list[template_name] = template_dict
 
-### 80-hash-filter.conf ###
+## 80-hash-filter.conf ###
 template_name = '80-hash-filter.conf'
 template_dict = { 'context' : { # Subsitutions to be performed
                                 'use_sha512'   : args.use_sha512,
@@ -199,7 +199,7 @@ template_dict = { 'context' : { # Subsitutions to be performed
                   'mode'    : 0644 }
 template_list[template_name] = template_dict
 
-### 80-hash-filter.conf ###
+### 90-ls-output ###
 template_name = '90-ls-output.conf'
 template_dict = { 'context' : { # Subsitutions to be performed
                                 'es_node_name'    : args.es_node_name,
