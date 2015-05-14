@@ -146,11 +146,6 @@ RUN \
 # This part is down atomically in order to ensure that superflious files like the tarball are removed from the
 # resulting file system layer, thus reducing the overall size of the image.
   
-# Install Contrib Plugins for Logstash
-RUN \
-  cd /logstash && \
-  bin/plugin install contrib
-  
 # Provided a volume for the lumberjack SSL certificate
 VOLUME /ls-data/ssl/ /ls-data/conf/
   
