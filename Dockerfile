@@ -14,15 +14,27 @@ FROM java:8-jre
 # When running use the following flags:
 #      --restart=on-failure
 
+# NOTICE: As this build is designed to run using multicast it is recommend you utilise Weave, or bridge your docker0 on
+# a common subnet in order to facilate the multicast. If you require unicast please override the configuration file.
+
 # WARNING:DO NOT OUTPUT LOGS TO SYSLOG FOR THIS CONTAINER. Especially if a stdout logging is enabled. This could create
 # a feedback loop where events are processed multiple times.
 
+# If you want to add additional filters you can add them into the /ls-data/conf volume. Please note the following:
+# x0 Reserved files for auto generated config files
+# 0x    - Inputs
+# 1x-7x - Filters
+# 8x    - Post Hash Filters
+# 9x    - Outputs
+
 # Information
 MAINTAINER Taylor Bertie <taylor.bertie@solnet.co.nz>
-LABEL Description="This image is used to stand up a logstash instance. You should overwrite the configuration of this \
-container as the default probably does not fit your usecase" Version="1.4.2"
+LABEL Description="This image is used to stand up a logstash instance. Provide the ES Cluster Name as the \
+--es-cluster-name (default: es-logstash) command line arguement to this container on start." Version="1.4.2"
 
 # Patch notes:
+# Version 1.4.2-r2
+#       - Moved to an Entry Point Script module with templated configuration files
 # Version 1.4.2-r1
 #       - Fixed bug in default configuration file 81-hash-filter.conf
 # Version 1.4.2
@@ -55,11 +67,20 @@ ENV LS_HOME /ls-data/
 ENV LS_HEAP_SIZE 4g
 ENV LS_JAVA_OPTS "-Djava.io.tmpdir=$LS_HOME"
 
+# Install any required preqs
+RUN \
+    apt-get update && \
+    apt-get install wget python python-jinja2 python-openssl python-crypto -y && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
 # Prepare the various directories in /es-data/
 RUN \
     mkdir -p /ls-data/ && \
     mkdir -p /ls-data/conf && \
-    mkdir -p /ls-data/ssl
+    mkdir -p /ls-data/ssl && \
+    mkdir -p /ls-templates/ && \
+    mkdir -p /ls-templates/static
 
 # Install Elasticsearch and delete the elasticsearch tarball
 RUN \
@@ -78,18 +99,22 @@ RUN \
   bin/plugin install contrib
   
 # Provided a volume for the lumberjack SSL certificate
-VOLUME /ls-data/ssl/
+VOLUME /ls-data/ssl/ /ls-data/conf/
   
 # Mount the configuration files
-ADD config/*.conf /ls-data/conf/
-# Add all configuration files in config/
-# NOTE: You also need add a lumberjack.crt and lumberjack.key into /ls-data/ssl/
+ADD templates/00-ls_input.conf /ls-templates/00-ls-input.conf
+ADD templates/80-hash-filter.conf /ls-templates/80-hash-filter.conf
+ADD templates/90-ls-output.conf /ls-templates/90-ls-output.conf
+
+# Install the entry script
+ADD scripts/entry.py /usr/local/bin/entry
+RUN chmod +x /usr/local/bin/entry
 
 # Define a working directory
 WORKDIR /ls-data
 
 # Define default command as entrypoint
-ENTRYPOINT ["/logstash/bin/logstash", "-f", "/ls-data/conf/"] 
+ENTRYPOINT ["/usr/local/bin/entry"]
 
 # Expose portsdocker
 # Expose 514: Syslog input for TCP
