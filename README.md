@@ -2,8 +2,6 @@
 
     Please note the following for this build:
     
-    - 1.5.0 has just been released. Althrough this should upgrade without issue to 1.5.0 it is strongly recommended you 
-      continue to use 1.4.2 until this container has been verified to work with 1.5.0.
     - I will be providing a guide on how to update your rsyslog files to be RFC3164 compliant, or modifying this to
       provide raw groked TCP/UDP inputs, until then expect lots of _grokparsefailure tags for any syslog input
 
