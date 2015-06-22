@@ -3,7 +3,7 @@
 # Version: 1.5.0
 
 # Pull base image (Java8)
-FROM java:8
+FROM ubuntu:14.10
 
 # Build Instructions:
 # When building use the following flags:
@@ -84,6 +84,8 @@ LABEL Description="This image is used to stand up a logstash instance. Provide t
 --es-cluster-name (default: es-logstash) command line arguement to this container on start." Version="1.5.0"
 
 # Patch notes:
+# Version 1.5.0-r2
+#       - Moved to Ubuntu Utopic Base Image
 # Version 1.5.0-r1
 #       - Fixed label to show version 1.5.0
 # Version 1.5.0
@@ -125,7 +127,7 @@ ENV LS_JAVA_OPTS "-Djava.io.tmpdir=$LS_HOME"
 # Install any required preqs
 RUN \
     apt-get update && \
-    apt-get install wget python python-jinja2 python-openssl python-crypto -y && \
+    apt-get install openjdk-8-jre-headless wget python python-jinja2 python-openssl python-crypto -y && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
