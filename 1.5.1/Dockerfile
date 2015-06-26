@@ -11,8 +11,8 @@ FROM ubuntu:14.10
 
 # Run Instructions:
 # When running use the following flags:
-#      --restart=on-failure --memory="4429185024" --memory-swap="-1"
-#                                         4224 MiB (4GB + 128MB overhead)
+#      --restart=on-failure --memory="6442450944" --memory-swap="-1"
+#                                         6144 MiB (4GiB heap + 2GiB overhead)
 # The following command line arguments are supported.
 # usage: entry [-h] [--stdout] [--hash-key [HASH_KEY]] [--use-sha512]                                                                                                                                                                          
 #              [--es-cluster-name [ES_CLUSTER_NAME]]                                                                                                                                                                                           
@@ -84,6 +84,8 @@ LABEL Description="This image is used to stand up a logstash instance. Provide t
 --es-cluster-name (default: es-logstash) command line arguement to this container on start." Version="1.5.1"
 
 # Patch notes:
+# Version 1.5.1-r2
+#       - Depericated 1.5.0 and 1.4.2 builds, as well as upped overhead to 2GiB
 # Version 1.5.1-r1
 #       - Moved to Ubuntu Utopic Base
 # Version 1.5.1
