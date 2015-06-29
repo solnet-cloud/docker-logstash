@@ -38,7 +38,7 @@ helptxt += ' (Default "docker-logstash")'
 argparser.add_argument('--stdout',
                        action='store_true',
                        help='Also output logs processed to stdout for debug (Not Recommend)')
-argparser.add_argument('--raw-input','-r',
+argparser.add_argument('--raw','-r',
                        action='store_true',
                        help='Tell Logstash to use the raw input rather than the syslog input. ')
 
@@ -179,6 +179,7 @@ template_list = {}
 ### 00-ls-input.conf ###
 template_name = '00-ls-input.conf'
 template_dict = { 'context' : { # Subsitutions to be performed
+                                'raw'          : args.raw,
                                 'lm_ssl_crt'   : args.lm_ssl_crt,
                                 'lm_ssl_key'   : args.lm_ssl_key,
                                 'lm_type'      : args.lm_type,
@@ -193,7 +194,7 @@ template_list[template_name] = template_dict
 ### 20-syslog-filter.conf ###
 template_name = '20-syslog-filter.conf'
 template_dict = { 'context' : { # Subsitutions to be performed
-                                'raw_input' : args.raw_input,
+                                'raw' : args.raw,
                               },
                   'path'    : '/ls-data/conf/20-syslog-filter.conf',
                   'user'    : 'root',
@@ -216,7 +217,6 @@ template_list[template_name] = template_dict
 ### 90-ls-output ###
 template_name = '90-ls-output.conf'
 template_dict = { 'context' : { # Subsitutions to be performed
-                                'raw_input'       : args.raw_input,
                                 'stdout'          : args.stdout,
                                 'es_node_name'    : args.es_node_name,
                                 'es_cluster_name' : args.es_cluster_name,

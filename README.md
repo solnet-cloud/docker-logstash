@@ -29,7 +29,7 @@ WARNING: Please note that as syslog is a very muddy term this input only support
     -h, --help            show this help message and exit                                                                                                                                                                                      
     --stdout              Also output logs processed to stdout for debug (Not                                                                                                                                                                  
                             Recommend)
-    --raw-input, -r       Tell Logstash to use the raw input rather than the
+    --raw, -r       Tell Logstash to use the raw input rather than the
                             syslog input.
                                                                                                                                                                                                                                                 
     hashing:                                                                                                                                                                                                                                     
