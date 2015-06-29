@@ -38,9 +38,6 @@ helptxt += ' (Default "docker-logstash")'
 argparser.add_argument('--stdout',
                        action='store_true',
                        help='Also output logs processed to stdout for debug (Not Recommend)')
-argparser.add_argument('--raw','-r',
-                       action='store_true',
-                       help='Tell Logstash to use the raw input rather than the syslog input. ')
 
 # Arguments Specific to Hashing
 argparser_hash = argparser.add_argument_group('hashing','Arguments specific to hashing')
@@ -179,24 +176,12 @@ template_list = {}
 ### 00-ls-input.conf ###
 template_name = '00-ls-input.conf'
 template_dict = { 'context' : { # Subsitutions to be performed
-                                'raw'          : args.raw,
                                 'lm_ssl_crt'   : args.lm_ssl_crt,
                                 'lm_ssl_key'   : args.lm_ssl_key,
                                 'lm_type'      : args.lm_type,
                                 'lm_tags'      : lm_tags,
                               },
                   'path'    : '/ls-data/conf/00-ls-input.conf',
-                  'user'    : 'root',
-                  'group'   : 'root',
-                  'mode'    : 0644 }
-template_list[template_name] = template_dict
-
-### 20-syslog-filter.conf ###
-template_name = '20-syslog-filter.conf'
-template_dict = { 'context' : { # Subsitutions to be performed
-                                'raw' : args.raw,
-                              },
-                  'path'    : '/ls-data/conf/20-syslog-filter.conf',
                   'user'    : 'root',
                   'group'   : 'root',
                   'mode'    : 0644 }

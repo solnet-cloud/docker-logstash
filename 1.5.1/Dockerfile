@@ -86,6 +86,8 @@ LABEL Description="This image is used to stand up a logstash instance. Provide t
 --es-cluster-name (default: es-logstash) command line arguement to this container on start." Version="1.5.1"
 
 # Patch notes:
+# Version 1.5.1-r5
+#       - Removed raw input as it was too difficult to maintain (and redundant in our use case)
 # Version 1.5.1-r4
 #       - Allowed switching between raw socket input and standard syslog input
 # Version 1.5.1-r3
@@ -163,7 +165,6 @@ VOLUME /ls-data/ssl/ /ls-data/conf/
   
 # Mount the configuration files
 ADD templates/00-ls-input.conf /ls-templates/00-ls-input.conf
-ADD templates/20-syslog-filter.conf /ls-templates/20-syslog-filter.conf
 ADD templates/80-hash-filter.conf /ls-templates/80-hash-filter.conf
 ADD templates/90-ls-output.conf /ls-templates/90-ls-output.conf
 
