@@ -28,7 +28,9 @@ WARNING: Please note that as syslog is a very muddy term this input only support
     optional arguments:                                                                                                                                                                                                                          
     -h, --help            show this help message and exit                                                                                                                                                                                      
     --stdout              Also output logs processed to stdout for debug (Not                                                                                                                                                                  
-                            Recommend)                                                                                                                                                                                                           
+                            Recommend)
+    --raw-input, -r       Tell Logstash to use the raw input rather than the
+                            syslog input.
                                                                                                                                                                                                                                                 
     hashing:                                                                                                                                                                                                                                     
     Arguments specific to hashing                                                                                                                                                                                                              

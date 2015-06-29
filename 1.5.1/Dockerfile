@@ -23,7 +23,9 @@ FROM ubuntu:14.10
 # optional arguments:                                                                                                                                                                                                                          
 #   -h, --help            show this help message and exit                                                                                                                                                                                      
 #   --stdout              Also output logs processed to stdout for debug (Not                                                                                                                                                                  
-#                         Recommend)                                                                                                                                                                                                           
+#                         Recommend)
+#   --raw-input, -r       Tell Logstash to use the raw input rather than the
+#                         syslog input.
 #                                                                                                                                                                                                                                              
 # hashing:                                                                                                                                                                                                                                     
 #   Arguments specific to hashing                                                                                                                                                                                                              
@@ -84,6 +86,8 @@ LABEL Description="This image is used to stand up a logstash instance. Provide t
 --es-cluster-name (default: es-logstash) command line arguement to this container on start." Version="1.5.1"
 
 # Patch notes:
+# Version 1.5.1-r4
+#       - Allowed switching between raw socket input and standard syslog input
 # Version 1.5.1-r3
 #       - Changed syslog to raw socket input and fixed a bug with stdout flag being ignored
 # Version 1.5.1-r2
