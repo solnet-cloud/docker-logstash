@@ -38,6 +38,9 @@ helptxt += ' (Default "docker-logstash")'
 argparser.add_argument('--stdout',
                        action='store_true',
                        help='Also output logs processed to stdout for debug (Not Recommend)')
+argparser.add_argument('--keep-redundant-syslog','-s',
+                       action='store_true',
+                       help='Tell Logstash to keep the redundant syslog messages. Useful for debugging')
 
 # Arguments Specific to Hashing
 argparser_hash = argparser.add_argument_group('hashing','Arguments specific to hashing')
@@ -187,6 +190,17 @@ template_dict = { 'context' : { # Subsitutions to be performed
                   'mode'    : 0644 }
 template_list[template_name] = template_dict
 
+### 20-syslog-filter.conf ###
+template_name = '20-syslog-filter.conf'
+template_dict = { 'context' : { # Subsitutions to be performed
+                                'drop_message' : not args.keep_redundant_syslog,
+                              },
+                  'path'    : '/ls-data/conf/20-syslog-filter.conf',
+                  'user'    : 'root',
+                  'group'   : 'root',
+                  'mode'    : 0644 }
+template_list[template_name] = template_dict
+
 ## 80-hash-filter.conf ###
 template_name = '80-hash-filter.conf'
 template_dict = { 'context' : { # Subsitutions to be performed
@@ -202,6 +216,7 @@ template_list[template_name] = template_dict
 ### 90-ls-output ###
 template_name = '90-ls-output.conf'
 template_dict = { 'context' : { # Subsitutions to be performed
+                                'stdout'          : args.stdout,
                                 'es_node_name'    : args.es_node_name,
                                 'es_cluster_name' : args.es_cluster_name,
                               },
@@ -308,3 +323,4 @@ for line in iter(child.stdout.readline, ''):
 
 # If the process terminates, read its errorcode and return it
 sys.exit(child.returncode)
+q
