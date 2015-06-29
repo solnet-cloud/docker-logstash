@@ -1,11 +1,5 @@
 # docker-logstash
 
-    Please note the following for this build:
-    
-    - I will be providing a guide on how to update your rsyslog files to be RFC3164 compliant, or modifying this to
-      provide raw groked TCP/UDP inputs, until then expect lots of _grokparsefailure tags for any syslog input
-
-
 Logstash is a flexible, open source data collection, parsing, and enrichment pipeline. With connectors to common infrastructure for easy integration, Logstash is designed to efficiently process a growing list of log, event, and unstructured data sources for distribution into a variety of outputs, including Elasticsearch.
 
 More details on the Logstash product can be found at the elastic website at https://www.elastic.co/products/logstash
