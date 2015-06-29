@@ -159,6 +159,7 @@ VOLUME /ls-data/ssl/ /ls-data/conf/
   
 # Mount the configuration files
 ADD templates/00-ls-input.conf /ls-templates/00-ls-input.conf
+ADD templates/20-syslog-filter.conf /ls-templates/20-syslog-filter.conf
 ADD templates/80-hash-filter.conf /ls-templates/80-hash-filter.conf
 ADD templates/90-ls-output.conf /ls-templates/90-ls-output.conf
 
