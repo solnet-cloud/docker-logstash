@@ -309,4 +309,3 @@ for line in iter(child.stdout.readline, ''):
 
 # If the process terminates, read its errorcode and return it
 sys.exit(child.returncode)
-q
