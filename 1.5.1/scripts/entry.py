@@ -63,7 +63,10 @@ argparser_es.add_argument('--es-node-name','-n',
                           action='store',
                           nargs='?',
                           help='The node name this logstash node should use when connecting to Elasticsearch')
-
+argparser_es.add_argument('--es-bind-host','-b',
+                          action='store',
+                          nargs='?',
+                          help='Override the default bind host (which is by default the first interface)')
 
 # Lumberjack Input 
 argparser_lm = argparser.add_argument_group('lumberjack',
@@ -205,6 +208,7 @@ template_dict = { 'context' : { # Subsitutions to be performed
                                 'stdout'          : args.stdout,
                                 'es_node_name'    : args.es_node_name,
                                 'es_cluster_name' : args.es_cluster_name,
+                                'ee_bind_host'    : args.es_bind_host,
                               },
                   'path'    : '/ls-data/conf/90-ls-output.conf',
                   'user'    : 'root',
