@@ -208,7 +208,7 @@ template_dict = { 'context' : { # Subsitutions to be performed
                                 'stdout'          : args.stdout,
                                 'es_node_name'    : args.es_node_name,
                                 'es_cluster_name' : args.es_cluster_name,
-                                'ee_bind_host'    : args.es_bind_host,
+                                'es_bind_host'    : args.es_bind_host,
                               },
                   'path'    : '/ls-data/conf/90-ls-output.conf',
                   'user'    : 'root',
