@@ -1,13 +1,13 @@
 # Logstash Docker
 # Solnet Solutions
-# Version: 1.5.1
+# Version: 1.5.5
 
 # Pull base image (Java8)
 FROM ubuntu:15.10
 
 # Build Instructions:
 # When building use the following flags:
-#      --tag="logstash:1.5.1" 
+#      --tag="logstash:1.5.5" 
 
 # Run Instructions:
 # When running use the following flags:
@@ -83,11 +83,12 @@ FROM ubuntu:15.10
 # Information
 MAINTAINER Taylor Bertie <taylor.bertie@solnet.co.nz>
 LABEL Description="This image is used to stand up a logstash instance. Provide the ES Cluster Name as the \
---es-cluster-name (default: es-logstash) command line arguement to this container on start." Version="1.5.1"
+--es-cluster-name (default: es-logstash) command line arguement to this container on start." Version="1.5.5"
 
 # Patch notes:
-# Version 1.5.1-r6
+# Version 1.5.5
 #	- Moved to Ubuntu 15.10
+#	- Upgraded to Logstash 1.5.5
 # Version 1.5.1-r5
 #       - Removed raw input as it was too difficult to maintain (and redundant in our use case)
 # Version 1.5.1-r4
@@ -131,7 +132,7 @@ LABEL Description="This image is used to stand up a logstash instance. Provide t
 #       - Used Elasticsearch Dockerfile 1.0.2 as a template for a Logstash 1.4.2 build.
 
 # Set the Logstash Version and other enviroment variables
-ENV LS_PKG_NAME logstash-1.5.1
+ENV LS_PKG_NAME logstash-1.5.5
 ENV LS_HOME /ls-data/
 ENV LS_HEAP_SIZE 4g
 ENV LS_JAVA_OPTS "-Djava.io.tmpdir=$LS_HOME"
