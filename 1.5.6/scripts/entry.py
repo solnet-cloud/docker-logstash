@@ -74,6 +74,9 @@ argparser_es.add_argument('--es-bind-host','-b',
                           action='store',
                           nargs='?',
                           help='Override the default bind host (which is by default the first interface)')
+argparser_es.add_argument('--es-disable','-d',
+                          action='store_true',
+                          help='Disable Elasticsearch Output')
 
 # Lumberjack Input 
 argparser_lm = argparser.add_argument_group('lumberjack-in',
@@ -252,6 +255,7 @@ template_dict = { 'context' : { # Subsitutions to be performed
                                 'es_node_name'    : args.es_node_name,
                                 'es_cluster_name' : args.es_cluster_name,
                                 'es_bind_host'    : args.es_bind_host,
+                                'es_disable'      : args.es_disable,
                                 'lmo_ssl_crt'     : args.lmo_ssl_crt,
                                 'lmo_codec'       : args.lmo_codec,
                                 'lmo_port'        : args.lmo_port,
