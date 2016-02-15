@@ -121,6 +121,7 @@ for pair in [(args.lm_ssl_crt, args.lm_ssl_key, 'LM')]:
         key_fh = open(ssl_path + pair[1])
     except IOError as e:
         print "One of the files provided in the %s key pair could not be opened, terminating..." % pair[2]
+        sys.exit(0) # This should return 0 to prevent the container from restarting	
 
     # Read in the files
     crt_raw = crt_fh.read()

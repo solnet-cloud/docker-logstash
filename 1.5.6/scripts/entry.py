@@ -20,8 +20,9 @@ from jinja2.exceptions import TemplateNotFound
 
 # Specific to to this script
 import itertools        # Required to chain the tags together properly
-import OpenSSL          # SSL Library for testing certificates
+import OpenSSL          # SSL Library for testing 
 from Crypto.Util import asn1 
+import glob,errno
 
 # Variables/Consts
 ssl_path = '/ls-data/ssl/'
@@ -38,6 +39,9 @@ helptxt += ' (Default "docker-logstash")'
 argparser.add_argument('--stdout',
                        action='store_true',
                        help='Also output logs processed to stdout for debug (Not Recommend)')
+argparser.add_argument('--print-config','-p',
+                       action='store_true',
+                       help='Prints config and then terminates, useful for debuging')
 
 # Arguments Specific to Hashing
 argparser_hash = argparser.add_argument_group('hashing','Arguments specific to hashing')
@@ -50,6 +54,9 @@ argparser_hash.add_argument('--hash-key','-k',
 argparser_hash.add_argument('--use-sha512','-5',
                        action='store_true',
                        help='By default this container uses SHA256 for hashing, override and use SHA512.')
+argparser_hash.add_argument('--disable-hash','-x',
+                       action='store_true',
+                       help='Use this flag to disable the hash filter from this Logstash instance')
 
 
 # Arguments specific to Elasticsearch
@@ -69,7 +76,7 @@ argparser_es.add_argument('--es-bind-host','-b',
                           help='Override the default bind host (which is by default the first interface)')
 
 # Lumberjack Input 
-argparser_lm = argparser.add_argument_group('lumberjack',
+argparser_lm = argparser.add_argument_group('lumberjack-in',
                                              'Arguments for when you want to use Lumberjack input' )
 argparser_lm.add_argument('--lm-ssl-crt', '-R',
                              action='store',
@@ -90,6 +97,29 @@ argparser_lm.add_argument('--lm-tags','-t',
 argparser_lm.add_argument('--ignore-match-errors',
                              action='store_true',
                              help='Ignore SSL certificate match errors. (Not recommended)')
+
+# Lumberjack Output
+argparser_lmo = argparser.add_argument_group('lumberjack-out',
+					      'Arguments for when you to use Lumberjack Output' )
+argparser_lmo.add_argument('--lmo-ssl-crt', '-C',
+				action='store',
+				nargs='?',
+				help='Certificate that server is using, under the %s volume' % ssl_path)
+argparser_lmo.add_argument('--lmo-codec','-D',
+				action='store',
+				nargs='?',
+				help='What plugin to for the output via Lumberjack. Defaults to json.',
+				default='json')
+argparser_lmo.add_argument('--lmo-hosts','-H',
+				action='append',
+				nargs='*',
+				help='What hosts should you send the lumberjack messages too')
+argparser_lmo.add_argument('--lmo-port','-P',
+				action='store',
+				type=int,
+				nargs='?',
+				help='What port should you send the lumberjack messages too, (Default 8888)',
+				default=8888)
 
 try:
     args = argparser.parse_args()
@@ -121,7 +151,7 @@ for pair in [(args.lm_ssl_crt, args.lm_ssl_key, 'LM')]:
         key_fh = open(ssl_path + pair[1])
     except IOError as e:
         print "One of the files provided in the %s key pair could not be opened, terminating..." % pair[2]
-        sys.exit(0) # This should return 0 to prevent the container from restarting
+	sys.exit(0) # This should return 0 to prevent the container from restarting
 
     # Read in the files
     crt_raw = crt_fh.read()
@@ -164,8 +194,19 @@ for pair in [(args.lm_ssl_crt, args.lm_ssl_key, 'LM')]:
         errormsg += " override with --ignore-match-errors, terminating..."
         print errormsg
         sys.exit(0) # This should be a return 0 to prevent the container from restarting.
+
+if (args.lmo_ssl_crt is not None) ^ (args.lmo_hosts is not None): # ^ = xor
+    print "The arguments --lmo-ssl-crt and --lm-hosts must be provided together, terminating..."
+    sys.exit(0) # This should be a return 0 to prevent the container from restarting.	
+
+if args.lmo_ssl_crt is not None and not os.path.isfile(ssl_path + args.lmo_ssl_crt):
+    print "The provided file in --lmo-ssl-crt (%s) does not exist, terminating..." % (ssl_path + args.lmo_ssl_crt)
+    sys.exit(0) # This should be a return 0 to prevent the container from restarting.
+	
         
 lm_tags = list(itertools.chain(*args.lm_tags)) if args.lm_tags is not None else None # Make lm_tags one merged list
+lmo_hosts = list(itertools.chain(*args.lmo_hosts)) if args.lmo_hosts is not None else None # Make lmo_hosts one merged list
+
 ########################################################################################################################
 # TEMPLATES                                                                                                            #
 # This is where you manage any templates                                                                               #
@@ -196,6 +237,7 @@ template_name = '80-hash-filter.conf'
 template_dict = { 'context' : { # Subsitutions to be performed
                                 'use_sha512'   : args.use_sha512,
                                 'hash_key'     : args.hash_key,
+                                'disable'      : args.disable_hash
                               },
                   'path'    : '/ls-data/conf/80-hash-filter.conf',
                   'user'    : 'root',
@@ -210,6 +252,10 @@ template_dict = { 'context' : { # Subsitutions to be performed
                                 'es_node_name'    : args.es_node_name,
                                 'es_cluster_name' : args.es_cluster_name,
                                 'es_bind_host'    : args.es_bind_host,
+                                'lmo_ssl_crt'     : args.lmo_ssl_crt,
+                                'lmo_codec'       : args.lmo_codec,
+                                'lmo_port'        : args.lmo_port,
+                                'lmo_hosts'       : lmo_hosts,
                               },
                   'path'    : '/ls-data/conf/90-ls-output.conf',
                   'user'    : 'root',
@@ -298,6 +344,19 @@ for template_item in template_list:
 ########################################################################################################################
 # SPAWN CHILD                                                                                                          #
 ########################################################################################################################
+### DEBUG PRINT ###
+if args.print_config:
+    path = "/ls-data/conf/*"
+    files = glob.glob(path)
+    for name in files:
+        try:
+            with open(name) as f:
+                sys.stdout.write(f.read())
+        except IOError as exc:
+            if exc.errno != errno.EISDIR:
+                raise
+    sys.exit(0)
+
 # Flush anything on the buffer
 sys.stdout.flush()
 
