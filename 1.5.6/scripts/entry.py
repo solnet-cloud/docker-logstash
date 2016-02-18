@@ -260,6 +260,7 @@ template_dict = { 'context' : { # Subsitutions to be performed
                                 'lmo_codec'       : args.lmo_codec,
                                 'lmo_port'        : args.lmo_port,
                                 'lmo_hosts'       : lmo_hosts,
+                                'output'          : args.stdout or not args.es_disable or args.lmo_ssl_crt is not None,
                               },
                   'path'    : '/ls-data/conf/90-ls-output.conf',
                   'user'    : 'root',
@@ -352,6 +353,7 @@ for template_item in template_list:
 if args.print_config:
     path = "/ls-data/conf/*"
     files = glob.glob(path)
+    files.sort()
     for name in files:
         try:
             with open(name) as f:

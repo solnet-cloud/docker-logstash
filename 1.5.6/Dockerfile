@@ -86,6 +86,8 @@ LABEL Description="This image is used to stand up a logstash instance. Provide t
 --es-cluster-name (default: es-logstash) command line arguement to this container on start." Version="1.5.5"
 
 # Patch notes:
+# Version 1.5.6-r1
+#       - Added a "no output" warning
 # Version 1.5.6
 #	- Moved to Logstash 1.5.6
 #	- Created Lumberjack Output
