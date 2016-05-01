@@ -77,7 +77,7 @@ argparser_es.add_argument('--es-bind-host','-b',
 argparser_es.add_argument('--es-disable','-d',
                           action='store_true',
                           help='Disable Elasticsearch Output')
-argparser_es.add_argument('--es-hosts','-z',
+argparser_es.add_argument('--es-host','-z',
                           action='append',
                           nargs='*',
                           help='Provide a list of hosts to connect the ElasticSearch node too')
