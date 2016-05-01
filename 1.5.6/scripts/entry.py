@@ -79,7 +79,7 @@ argparser_es.add_argument('--es-disable','-d',
                           help='Disable Elasticsearch Output')
 argparser_es.add_argument('--es-hosts','-z',
                           action='append',
-                          nargs'*',
+                          nargs='*',
                           help='Provide a list of hosts to connect the ElasticSearch node too')
 
 # Lumberjack Input 
