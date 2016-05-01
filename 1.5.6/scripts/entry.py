@@ -77,6 +77,10 @@ argparser_es.add_argument('--es-bind-host','-b',
 argparser_es.add_argument('--es-disable','-d',
                           action='store_true',
                           help='Disable Elasticsearch Output')
+argparser_es.add_argument('--es-hosts','-z',
+                          action='append',
+                          nargs'*',
+                          help='Provide a list of hosts to connect the ElasticSearch node too')
 
 # Lumberjack Input 
 argparser_lm = argparser.add_argument_group('lumberjack-in',
@@ -209,6 +213,7 @@ if args.lmo_ssl_crt is not None and not os.path.isfile(ssl_path + args.lmo_ssl_c
         
 lm_tags = list(itertools.chain(*args.lm_tags)) if args.lm_tags is not None else None # Make lm_tags one merged list
 lmo_hosts = list(itertools.chain(*args.lmo_hosts)) if args.lmo_hosts is not None else None # Make lmo_hosts one merged list
+es_host = list(itertools.chain(*args.es_host)) if args.es_host is not None else None # Make es_host one merged list
 
 ########################################################################################################################
 # TEMPLATES                                                                                                            #
@@ -256,6 +261,7 @@ template_dict = { 'context' : { # Subsitutions to be performed
                                 'es_cluster_name' : args.es_cluster_name,
                                 'es_bind_host'    : args.es_bind_host,
                                 'es_disable'      : args.es_disable,
+                                'es_host'         : es_host,
                                 'lmo_ssl_crt'     : args.lmo_ssl_crt,
                                 'lmo_codec'       : args.lmo_codec,
                                 'lmo_port'        : args.lmo_port,
